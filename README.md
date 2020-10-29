@@ -1,2 +1,2 @@
 # izomrost_test
-job interview teszt
+job interview test
