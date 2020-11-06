@@ -15,7 +15,9 @@ public class NameValidatorServiceImpl implements NameValidatorService {
 
     @Override
     public boolean isContainsBothNames(String name) {
-        String tempName = name;
+        String tempName = name == null ? "" : name;
+        log.info("name: {}", name);
+        log.info("name.contains DR. {}", name.contains("Dr."));
         boolean isDrExist = name.contains("Dr.");
 
         if(isDrExist) {
@@ -43,6 +45,7 @@ public class NameValidatorServiceImpl implements NameValidatorService {
     }
 
     public boolean isValid(String str) {
+        log.info("48 isValid str {}", str);
         return isContainsBothNames(str) &&
                 !isContainUnwantedChar(str) &&
                 !isTooLengthy(str);

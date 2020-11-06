@@ -18,6 +18,8 @@ public class OkmanyErvenyesegEllenorzesServiceImpl implements OkmanyErvenyesegEl
 
     @Override
     public boolean isValidFormat(String date) {
+        if(date == null)
+            return false;
         DateFormat sdf = new SimpleDateFormat(this.dateFormat);
         sdf.setLenient(false);
         try {
@@ -28,13 +30,22 @@ public class OkmanyErvenyesegEllenorzesServiceImpl implements OkmanyErvenyesegEl
         return true;
     }
 
+    public boolean isValidFormat(Date date) {
+        if(date == null)
+            return false;
+        DateFormat sdf = new SimpleDateFormat(this.dateFormat);
+        sdf.format(date);
+        return true;
+    }
+
     @Override
-    public boolean isValid(Date lejaratDatum) {
+    public boolean isExpired(Date lejaratDatum) {
         LocalDate today = LocalDate.now();
         LocalDate lejaratiDatum = convertDateToLocalDate(lejaratDatum);
         return lejaratDatum != null &&
-                today.compareTo(lejaratiDatum) != -1;
+                today.compareTo(lejaratiDatum) > 0;
     }
+
     private LocalDate convertDateToLocalDate(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }

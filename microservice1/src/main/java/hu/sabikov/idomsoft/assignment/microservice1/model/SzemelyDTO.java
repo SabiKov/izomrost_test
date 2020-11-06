@@ -19,7 +19,7 @@ public class SzemelyDTO {
 
     private String szulNev;
 
-    private String aNev;
+    private String anyjaNeve;
 
     private Date szulDat;
 

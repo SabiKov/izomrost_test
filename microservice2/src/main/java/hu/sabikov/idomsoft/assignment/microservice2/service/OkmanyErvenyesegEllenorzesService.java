@@ -6,5 +6,5 @@ public interface OkmanyErvenyesegEllenorzesService {
 
     boolean isValidFormat(String date);
 
-    boolean isValid(Date lejaratDatum);
+    boolean isExpired(Date lejaratDatum);
 }

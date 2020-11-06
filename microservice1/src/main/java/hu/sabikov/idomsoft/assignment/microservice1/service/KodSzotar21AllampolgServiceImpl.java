@@ -46,17 +46,21 @@ public class KodSzotar21AllampolgServiceImpl implements KodSzotar21AllampolgServ
 
     @Override
     public String findAllampDekod(String allampKod) {
+        log.info("szotar {}", allampKod);
         KodSzotar21Allampolg szotar = getKodSzotar21Allampolg();
-        System.out.println(szotar);
+        log.info("szotar {}", szotar);
         List<Row> rows = szotar.getRows();
+        log.info("rows {}", rows);
+        String allamKodDig = "";
+        for(Row row : rows) {
 
-        String allamDeKod = rows
-                .stream()
-                .filter(row -> row.getAllampolgarsag().equals(allampKod))
-                .findAny()
-                .orElse(null)
-                .getAllampolgarsag();
-        log.info("allamDekod {} ", allamDeKod);
-        return allamDeKod;
+            if(row.getKod().trim().equals(allampKod.trim())) {
+                log.info("row.getKod(): {}", row.getKod());
+                log.info("állampolgárság: {}", row.getAllampolgarsag());
+                allamKodDig = row.getAllampolgarsag();
+
+            }
+        }
+        return allamKodDig;
     }
 }
