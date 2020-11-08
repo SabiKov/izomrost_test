@@ -45,7 +45,8 @@ public class NameValidatorServiceImpl implements NameValidatorService {
     }
 
     public boolean isValid(String str) {
-        log.info("48 isValid str {}", str);
+        log.info("NameValidatorService isValid str {}", str);
+        log.info("NameValidatorService isValid str {}", str);
         return isContainsBothNames(str) &&
                 !isContainUnwantedChar(str) &&
                 !isTooLengthy(str);

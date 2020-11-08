@@ -18,11 +18,11 @@ public class OkmanyDataStructure {
     @Autowired
     OkmanyErvenyesegEllenorzesService okmanyErvenyesegEllenorzesService;
 
-    private List<OkmanyDTO> okmanyDTOListType1;
-    private List<OkmanyDTO> okmanyDTOListType2;
-    private List<OkmanyDTO> okmanyDTOListType3;
-    private List<OkmanyDTO> okmanyDTOListType4;
-    private List<OkmanyDTO> okmanyDTOListType5;
+    private ArrayList<OkmanyDTO> okmanyDTOListType1;
+    private ArrayList<OkmanyDTO> okmanyDTOListType2;
+    private ArrayList<OkmanyDTO> okmanyDTOListType3;
+    private ArrayList<OkmanyDTO> okmanyDTOListType4;
+    private ArrayList<OkmanyDTO> okmanyDTOListType5;
 
     {
         okmanyDTOListType1 = new ArrayList<>();
@@ -33,6 +33,7 @@ public class OkmanyDataStructure {
     }
 
     public void addOkmanyDtoToList(OkmanyDTO okmanyDTO) {
+        log.info("okmanyDTO {} ", okmanyDTO);
         switch(okmanyDTO.getOkmTipus()) {
             case "1":
                 okmanyDTOListType1.add(okmanyDTO);
@@ -117,8 +118,8 @@ public class OkmanyDataStructure {
         return countMultipleValidDocet;
     }
 
-    public List<OkmanyDTO> mergeIntoSingleList() {
-        return Stream.of(
+    public ArrayList<OkmanyDTO> mergeIntoSingleList() {
+        return (ArrayList<OkmanyDTO>) Stream.of(
                 okmanyDTOListType1,
                 okmanyDTOListType2,
                 okmanyDTOListType3,

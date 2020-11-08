@@ -4,7 +4,7 @@ import hu.sabikov.idomsoft.assignment.microservice2.model.DataError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class DataErrorServiceImpl implements DataErrorService {
@@ -24,7 +24,7 @@ public class DataErrorServiceImpl implements DataErrorService {
     }
 
     @Override
-    public List<String> getInfoAboutIncorrectData() {
+    public ArrayList<String> getInfoAboutIncorrectData() {
         return dataError.getInfoAboutIncorrectData();
     }
 }

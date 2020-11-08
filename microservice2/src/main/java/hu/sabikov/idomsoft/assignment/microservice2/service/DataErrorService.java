@@ -1,5 +1,6 @@
 package hu.sabikov.idomsoft.assignment.microservice2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DataErrorService {
@@ -8,5 +9,5 @@ public interface DataErrorService {
 
     int sizeOfInfoAboutIncorrectData();
 
-    List<String> getInfoAboutIncorrectData();
+    ArrayList<String> getInfoAboutIncorrectData();
 }

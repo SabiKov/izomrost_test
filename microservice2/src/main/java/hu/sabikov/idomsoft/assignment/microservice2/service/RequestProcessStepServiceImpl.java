@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +25,11 @@ public class RequestProcessStepServiceImpl implements RequestProcessStepService 
     @Autowired
     DataErrorService dataErrorService;
 
+    @Autowired
+    OkmanyErvenyesegEllenorzesService okmanyErvenyesegEllenorzesService;
+
     @Override
-    public ResponseEntity<List> processWorkFlow(List<OkmanyDTO> okmanyDTOs) throws InvalidRequestedParamsException {
-        //Todo suppose only one docet can be, then must be able to recieve multiple docets type
+    public ResponseEntity<ArrayList> processWorkFlow(ArrayList<OkmanyDTO> okmanyDTOs) throws InvalidRequestedParamsException {
         log.info("size of okmany {}", okmanyDTOs.size());
 
         //Sorting based on docet type
@@ -35,6 +38,7 @@ public class RequestProcessStepServiceImpl implements RequestProcessStepService 
         }
 
         boolean isMultipleSameValidDocet = okmanyDataStructure.isMultipleValidOkmany();
+
         if(isMultipleSameValidDocet) {
             dataErrorService.addInfoAboutIncorrectData("több érvényes dokument tipus");
             return new ResponseEntity<>(
@@ -42,8 +46,8 @@ public class RequestProcessStepServiceImpl implements RequestProcessStepService 
                     HttpStatus.FORBIDDEN);
         }
 
-        List<OkmanyDTO> remergedList = okmanyDataStructure.mergeIntoSingleList();
-        List<OkmanyDTO> listWithCheckingExpiration = new ArrayList<>();
+        ArrayList<OkmanyDTO> remergedList = okmanyDataStructure.mergeIntoSingleList();
+        ArrayList<OkmanyDTO> listWithCheckingExpiration = new ArrayList<>();
         for(OkmanyDTO okmanyDTO : remergedList) {
             boolean isValidOkmanySzam =
                     okmanySzamValidatorService.isValid(
@@ -52,9 +56,9 @@ public class RequestProcessStepServiceImpl implements RequestProcessStepService 
             if(isValidOkmanySzam) {
                 dataErrorService.addInfoAboutIncorrectData("hibás okmányszám " + okmanyDTO.getOkmanySzam());
             }
-            boolean isValidExipration = !okmanySzamValidatorService.isValid(
-                    okmanyDTO.getOkmTipus(),
-                    okmanyDTO.getOkmanySzam());
+
+            boolean isValidExipration = !okmanyErvenyesegEllenorzesService.isExpired(okmanyDTO.getLejarDat());
+            log.info("okmany isExpired {}", isValidExipration);
             okmanyDTO.setErvenyes(isValidExipration);
             listWithCheckingExpiration.add(okmanyDTO);
         }

@@ -5,10 +5,10 @@ import hu.sabikov.idomsoft.assignment.microservice1.model.OkmanyDTO;
 import hu.sabikov.idomsoft.assignment.microservice1.model.SzemelyDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.ToDoubleBiFunction;
@@ -48,7 +48,7 @@ public class RequestProcessStepImpl implements RequestProcessStep {
         if(!isValid)
             dataErrorService.addInfoAboutIncorrectData("hibás születési neve");
 
-        szemelyDTO.setAnyjaNeve("random muter");
+       // szemelyDTO.setAnyjaNeve("random muter");
         log.info("szemelyDTO.getANev() {}", szemelyDTO.getAnyjaNeve());
         isValid = nameValidatorService.isValid(szemelyDTO.getAnyjaNeve());
         if(!isValid)
@@ -69,24 +69,36 @@ public class RequestProcessStepImpl implements RequestProcessStep {
             szemelyDTO.setAllampKod(allamPolgarsagDeKod);
         }
 
-        //Todo invoke second service2
-        List<OkmanyDTO> okmanyDTOs = szemelyDTO.getOkmLista();
+        if(dataErrorService.sizeOfInfoAboutIncorrectData() > 0) {
+            return new ResponseEntity(dataErrorService.getInfoAboutIncorrectData(), HttpStatus.FORBIDDEN);
+        }
 
-        ResponseEntity<Object> microservice2Response = okmanyDtoService
+        //Todo invoke second service2
+        ArrayList<OkmanyDTO> okmanyDTOs = szemelyDTO.getOkmLista();
+
+        ResponseEntity<List<OkmanyDTO>> microservice2Response = okmanyDtoService
                 .getOkmanyDtoResponse(okmanyDTOs);
 
         if(microservice2Response.getStatusCodeValue() == 403) {
             log.info("hiba az microservice 2 doksiban");
-            List<String> okmanyErrorList = (List<String>) microservice2Response.getBody();
+            List<OkmanyDTO> okmanyErrorList = microservice2Response.getBody();
             List errorLists = Stream.concat(
                     dataErrorService.getInfoAboutIncorrectData().stream(),
                     okmanyErrorList.stream())
                     .collect(Collectors.toList());
             return new ResponseEntity<>(errorLists, HttpStatus.FORBIDDEN);
         }
-        //Todo ellenőrizni a response valid vagy nem
+        else if(microservice2Response == null) {
+            //TODO nothing to do some issue okmanyDTO
+        }
+        else {
+            log.info("microservice2Response.getBody() respone {} ", microservice2Response.getBody());
+            List<OkmanyDTO> okmanyDTOList = microservice2Response.getBody();
+            log.info("okmanyDTO respone {} ", okmanyDTOList);
+            szemelyDTO.setOkmLista((ArrayList<OkmanyDTO>)okmanyDTOList);
+        }
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(szemelyDTO, HttpStatus.OK);
     }
 
 

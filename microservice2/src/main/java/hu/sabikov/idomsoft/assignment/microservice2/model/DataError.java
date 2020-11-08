@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class DataError {
 
-    private static List<String> infoAboutIncorrectData;
+    private static ArrayList<String> infoAboutIncorrectData;
 
     static {
         infoAboutIncorrectData =  new ArrayList<>();
@@ -28,7 +28,7 @@ public class DataError {
         return infoAboutIncorrectData.size();
     }
 
-    public static List<String> getInfoAboutIncorrectData() {
+    public static ArrayList<String> getInfoAboutIncorrectData() {
         return infoAboutIncorrectData;
     }
 }

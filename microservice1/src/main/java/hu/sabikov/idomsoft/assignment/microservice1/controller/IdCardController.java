@@ -12,6 +12,7 @@ import hu.sabikov.idomsoft.assignment.microservice1.service.RequestProcessStep;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,16 +33,17 @@ public class IdCardController {
     @Autowired
     RequestProcessStep requestProcessStep;
 
-    @Autowired
-    KodSzotar21AllampolgServiceImpl kodSzotar21AllampolgService;
-
-    @Autowired
-    OkmanyDtoService okmanyDtoService;
-
+//    @Autowired
+//    KodSzotar21AllampolgServiceImpl kodSzotar21AllampolgService;
+//
+//    @Autowired
+//    OkmanyDtoService okmanyDtoService;
+//
     @Autowired
     DataErrorService dataErrorService;
 
-    @PostMapping("szemelydto")
+    @PostMapping(value= "/szemelydto", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity processRequestedData(
             @RequestBody SzemelyDTO szemelyDTO) {
 

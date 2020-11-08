@@ -1,11 +1,13 @@
 package hu.sabikov.idomsoft.assignment.microservice1.service;
 
 import hu.sabikov.idomsoft.assignment.microservice1.model.DataError;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class DataErrorServiceImpl implements DataErrorService {
 
@@ -15,6 +17,7 @@ public class DataErrorServiceImpl implements DataErrorService {
 
     @Override
     public void addInfoAboutIncorrectData(String msg) {
+        log.info("issue addInfoAboutIncorrectData(msg) {} ", msg);
         dataError.addInfoAboutIncorrectData(msg);
     }
 

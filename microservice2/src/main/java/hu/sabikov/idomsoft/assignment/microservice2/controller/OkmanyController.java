@@ -5,6 +5,7 @@ import hu.sabikov.idomsoft.assignment.microservice2.exception.InvalidRequestedPa
 import hu.sabikov.idomsoft.assignment.microservice2.model.OkmanyDTO;
 import hu.sabikov.idomsoft.assignment.microservice2.service.Kodszotar46OkmanyTipusService;
 import hu.sabikov.idomsoft.assignment.microservice2.service.RequestProcessStepService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/mcrsrv2")
 public class OkmanyController {
@@ -27,10 +29,13 @@ public class OkmanyController {
     RequestProcessStepService requestProcessStepService;
 
     @PostMapping("okmanydto")
-    public ResponseEntity<List> processRequestedData(
-            @RequestBody List<OkmanyDTO> okmanyDTOs) {
+    public ResponseEntity<ArrayList> processRequestedData(
+            @RequestBody ArrayList<OkmanyDTO> okmanyDTOs) {
 
-        ResponseEntity<List> response = null;
+        log.info("okmanyDTO request body {} ", okmanyDTOs);
+        log.info("okmanyDTO request body  size {} ", okmanyDTOs.size());
+
+        ResponseEntity<ArrayList> response = null;
         try {
             response = requestProcessStepService.processWorkFlow(okmanyDTOs);
         } catch (InvalidRequestedParamsException e) {

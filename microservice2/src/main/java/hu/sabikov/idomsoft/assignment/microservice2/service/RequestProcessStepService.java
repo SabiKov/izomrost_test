@@ -4,9 +4,10 @@ import hu.sabikov.idomsoft.assignment.microservice2.exception.InvalidRequestedPa
 import hu.sabikov.idomsoft.assignment.microservice2.model.OkmanyDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface RequestProcessStepService {
 
-    ResponseEntity<List> processWorkFlow(List<OkmanyDTO> okmanyDTOs) throws InvalidRequestedParamsException;
+    ResponseEntity<ArrayList> processWorkFlow(ArrayList<OkmanyDTO> okmanyDTOs) throws InvalidRequestedParamsException;
 }
